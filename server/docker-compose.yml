@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes: # Added data volume inside project directory to take control of data and its persistence, allowing to share data within this repo (development)
+      - ./db/mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+
