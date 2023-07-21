@@ -1,5 +1,5 @@
 
-# Alaya mern dev challenge 
+# MERN Challenge
 
 ## Presentation
 
