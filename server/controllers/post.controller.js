@@ -67,15 +67,22 @@ getPost = async (req, res) => {
  * @param res
  * @returns void
  */
+
+
 deletePost = async (req, res) => {
   Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
-    if (err) {
-      res.status(500).send(err);
-    }
+      if (err) {
+          res.status(500).send(err);
+      }
 
-    post.remove(() => {
-      res.status(200).end();
-    });
+      // Security back-end control to avoid deletion of posts by not owners.
+      if (req.body.user === post.name) {
+          post.remove(() => {
+              res.status(200).end();
+          });
+      } else {
+          res.status(401).json({error: 'Only the owner of the post can delete it.'});
+      }
   });
 };
 
