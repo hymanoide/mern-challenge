@@ -19,16 +19,22 @@ export default async (endpoint, method = 'get', body) => {
         method,
         body: JSON.stringify(body),
     })
-        .then(response => response.json().then(json => ({json, response})))
-        .then(({json, response}) => {
+        .then(response => {
             if (!response.ok) {
-                return Promise.reject(json);
+                // Redirect to the login page when Status:  401 Unauthorized is received
+                if (response.status === 401) {
+                    alert("Your session has expired, so you need to login again. Come on!")
+                    localStorage.removeItem('jwtToken');
+                    localStorage.removeItem('username');
+                    return window.location.href = '/login'; // Change '/login' to the actual login page URL
+                }
+                return Promise.reject(response.statusText);
             }
-
-            return json;
+            return response.json();
         })
-        .then(
-            response => response,
-            error => error
-        );
-}
+        .then(data => data)
+        .catch(error => {
+            console.error('API Error:', error);
+            return Promise.reject(error);
+        });
+};
