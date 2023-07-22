@@ -7,15 +7,16 @@ import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import {useSelector} from "react-redux";
+import PostImageWrapper from "./PostImageWrapper";
 
 function PostListItem({post, onDelete}) {
 
     const isAuthenticated = useSelector(state => state.users.isAuthenticated)
     const loggedUser = useSelector(state => state.users.loggedUser)
 
-
     return (
         <Card className="w-100 my-4">
+            <PostImageWrapper post={post}/> {/* Post image wrapper and upload functionality*/}
             <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                     <Link to={`/posts/${post.cuid}/${post.slug}`}>
